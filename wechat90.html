@@ -34,7 +34,7 @@
             <label for = 'password'> Password: </label>
             <input type="password" id="password" placeholder="Enter your password" required>
             <button onclick = "signup()"> Sign up </button>
-            <button onclick="login()">Login </button>
+            <button id="login">Login </button>
         </div>
     </div>
 
@@ -64,6 +64,12 @@
                 // Create an object store (table) if it doesn't exist
                 if (!db.objectStoreNames.contains('users')) {
                     db.createObjectStore('users', { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains('userscontacts')){
+                    db.createObjectStore('userscontacts', { keyPath: ['id1', 'id2']});
+                }
+                if (!db.objectStoreNames.contains('usersmessages')){
+                    db.createObjectStore('usersmessages', { unique: false });
                 }
             };
         };
