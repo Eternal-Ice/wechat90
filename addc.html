@@ -56,7 +56,7 @@
                     db.createObjectStore('users', { keyPath: 'id' });
                 }
                 if (!db.objectStoreNames.contains('userscontacts')){
-                    db.createObjectStore('userscontacts', { keyPath: ['id1', 'id2']});
+                    db.createObjectStore('userscontacts', { keyPath: ['u1', 'u2']});
                 }
                 if (!db.objectStoreNames.contains('usersmessages')){
                     db.createObjectStore('usersmessages', { unique: false });
@@ -83,7 +83,8 @@
                     const store = addTransaction.objectStore('userscontacts');
                     const contact = {
                         id1: username,
-                        id2: adduser
+                        id2: adduser,
+                        other: f
                     };
                     const addRequest = store.add(contact);
                     addRequest.onsuccess = () => {
@@ -113,7 +114,7 @@
             request.onsuccess = (event) => {
                 const user = event.target.result;
                 if (user) {
-                    console.log(`User found: ${userscontacts.id}, ${userscontacts.password}`)
+                    console.log(`User found: ${userscontacts.id1}, ${userscontacts.id2}, ${userscontacts.other}`)
                 } else {
                     console.log('User not found.')
                 }
