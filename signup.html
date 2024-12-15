@@ -42,7 +42,7 @@
 
         // Open IndexedDB database
         const openDatabase = () => {
-            const request = indexedDB.open('MyDatabase', 1);
+            const request = indexedDB.open('MyDatabase', 3);
 
             request.onerror = (event) => {
                 console.log('Error opening database.')
