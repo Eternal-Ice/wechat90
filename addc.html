@@ -24,6 +24,8 @@
             <input type="text" id="addu" placeholder="Type Contact Username" required>
             <button id="addc"> Add Contact</button>
             <button id="getData">Get Data</button>
+            <button id="send"> Send </button>
+            <button id="receive"> Receive </button>
         </div>
     </div>
 
@@ -38,7 +40,7 @@
 
         // Open IndexedDB database
         const openDatabase = () => {
-            const request = indexedDB.open('MyDatabase', 3);
+            const request = indexedDB.open('MyDatabase', 4);
 
             request.onerror = (event) => {
                 console.log('Error opening database.')
@@ -59,7 +61,7 @@
                     db.createObjectStore('userscontacts', { keyPath: ['u1', 'u2']});
                 }
                 if (!db.objectStoreNames.contains('usersmessages')){
-                    db.createObjectStore('usersmessages', { unique: false });
+                    db.createObjectStore('usersmessages', { keyPath: ['sender', 'receiver']});
                 }
             };
         };
@@ -123,10 +125,44 @@
                 console.log('Error retrieving data.')
             };
         };
+
+        const send = () => {
+            const transaction = db.transaction(['usersmessages'], 'readwrite');
+            const store = transaction.objectStore('usersmessages');
+            let messagelist = [{message: "hello", time: 4}, {message: "hi", time: 5}]
+            let request = store.put(messagelist, ["jlin","lin"]);
+            request.onsuccess = () => {
+                console.log('send')
+            };
+            request.onerror = () => {
+                console.log('bad')
+            };
+        }
+        const receive = () => {
+            const transaction = db.transaction(['usersmessages'], 'readonly');
+            const store = transaction.objectStore('usersmessages');
+
+            const request = store.get(["jlin","lin"]); // Get data with id
+
+            request.onsuccess = (event) => {
+                const user = event.target.result;
+                if (user) {
+                    console.log(`message: ${user[1].message}, ${user[1].time}`)
+                } else {
+                    console.log('Not found.')
+                }
+            };
+
+            request.onerror = () => {
+                console.log('Error retrieving data.')
+            };
+        };
         
         // Event listeners
         document.getElementById('addc').addEventListener('click', addc);
         document.getElementById('getData').addEventListener('click', getData);
+        document.getElementById('send').addEventListener('click', send);
+        document.getElementById('receive').addEventListener('click', receive);
 
         // Open the database when the page is loaded
         window.onload = openDatabase;
