@@ -72,6 +72,24 @@
     color: #333;
 }
 
+.contact-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact-item:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+.contact-item.selected {
+    background-color:#00477f;
+    color: white;
+}
+
 .contacts h3 {
     border-bottom: 1px solid #ccc;
     margin-top: 10px;

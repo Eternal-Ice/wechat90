@@ -13,10 +13,10 @@
         <div class = 'chat-container' id = 'chat-container'>
 
             <div class = "window-header" id ="header">
-                <span class = "window-title"> Wechat </span>
+                <span class = "window-title"> Chat with User Name </span>
                 <div class = "window-controls">
                     <button class = "minimize" onclick ="minimizeWindow()">_</button>
-                    <button class = "maximize" onlick = "maximizeWindow()">[]</button>
+                    <button class = "maximize" onclick = "maximizeWindow()">[]</button>
                     <button class = "close" onclick="closeWindow()">X</button>
                 </div>
             </div>
@@ -69,6 +69,11 @@
                 }
             };
         };
+
+        // Retrieving username from the URL parameter
+        const para = new URLSearchParams(window.location.search);
+        const username = para.get('friend') || 'User';  // Default to 'User' if not provided
+        document.querySelector('.window-title').textContent = `Chatting with ${username}`;
 
         let messagesReceived = [];
         
