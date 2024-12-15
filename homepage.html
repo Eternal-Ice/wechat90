@@ -35,11 +35,11 @@
                     <h3>Online (2)</h3>
                     <ul>
                         <li>
-                            <img src="user1.png" alt="User" class="contact-pic">
-                            <span>Dan (Away)</span>
+                            <img src="" alt="User" class="contact-pic">
+                            <span>Dan</span>
                         </li>
                         <li>
-                            <img src="user2.png" alt="User" class="contact-pic">
+                            <img src="" alt="User" class="contact-pic">
                             <span>Lisa</span>
                         </li>
                     </ul>
@@ -50,7 +50,7 @@
                     <h3>Not Online (1)</h3>
                     <ul>
                         <li>
-                            <img src="user3.png" alt="User" class="contact-pic">
+                            <img src="" alt="User" class="contact-pic">
                             <span>Sarah</span>
                         </li>
                     </ul>
@@ -70,6 +70,37 @@
             </div>
         </div>
     </div>
+
+    <script>
+        let db;
+
+        // Open IndexedDB database
+        const openDatabase = () => {
+            const request = indexedDB.open('MyDatabase', 1);
+
+            request.onerror = (event) => {
+                console.log('Error opening database.')
+            };
+
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                console.log('Database opened successfully.')
+            };
+
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                // Create an object store (table) if it doesn't exist
+                if (!db.objectStoreNames.contains('users')) {
+                    db.createObjectStore('users', { keyPath: 'id' });
+                }
+            };
+        };
+
+        var para = new URLSearchParams(window.location.search)
+        var u = para.get('username')
+        console.log(u)
+
+    </script>
 </body>
 </html>
 
