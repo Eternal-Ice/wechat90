@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - 90s WeChat</title>
+    <link rel="stylesheet" href="loginstyles.css"> <!-- Link to the external CSS file -->
+</head>
+
+<body>
+    <div class = "desktop-background">
+
+        <div class = 'login-container' id = 'login-container'>
+
+            <div class = "window-header" id ="header">
+                <span class = "window-title"> Wechat </span>
+                <div class = "window-controls">
+                    <button class = "minimize" onclick ="minimizeWindow()">_</button>
+                    <button class = "maximize" onlick = "maximizeWindow()">[]</button>
+                    <button class = "close" onclick="closeWindow()">X</button>
+                </div>
+            </div>
+
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <input type="password" id="cpassword" placeholder="Confirm your password" required>
+            
+            <button id="signup"> Sign up </button>
+
+        </div>
+    </div>
+
+
+    <div class = "footer">
+        <p> By: Winston Lin</p>
+        <p>Inspired by MSN Messenger (90s)</p>
+    </div>
+
+    <script>
+        let db;
+
+        // Open IndexedDB database
+        const openDatabase = () => {
+            const request = indexedDB.open('MyDatabase', 1);
+
+            request.onerror = (event) => {
+                console.log('Error opening database.')
+            };
+
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                console.log('Database opened successfully.')
+            };
+
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                // Create an object store (table) if it doesn't exist
+                if (!db.objectStoreNames.contains('users')) {
+                    db.createObjectStore('users', { keyPath: 'id' });
+                }
+            };
+        };
+
+        // Store data in IndexedDB
+        const signup = () => {
+            var u = document.getElementById("username").value
+            var p = document.getElementById("password").value
+            var cp = document.getElementById("cpassword").value
+            const user = {
+                id: u,
+                password: p
+            };
+            if(p!=cp){
+                alert('Please Confirm Password')
+            }else{
+                const transaction = db.transaction(['users'], 'readwrite');
+                const store = transaction.objectStore('users');
+
+                const request = store.add(user);
+                request.onsuccess = () => {
+                    alert('User Added Successfully')
+                };
+
+                request.onerror = () => {
+                    alert('User Exists')
+                };
+            }
+        };
+
+        // Event listeners
+        document.getElementById('signup').addEventListener('click', signup);
+
+
+        // Open the database when the page is loaded
+        window.onload = openDatabase;
+    </script>
+</body>
+
+
+</html>

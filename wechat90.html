@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - 90s WeChat</title>
+    <link rel="stylesheet" href="loginstyles.css"> <!-- Link to the external CSS file -->
+</head>
+
+<body>
+    <div class = "desktop-background">
+
+        <div class = 'login-container' id = 'login-container'>
+
+            <div class = "window-header" id ="header">
+                <span class = "window-title"> Wechat </span>
+                <div class = "window-controls">
+                    <button class = "minimize" onclick ="minimizeWindow()">_</button>
+                    <button class = "maximize" onlick = "maximizeWindow()">[]</button>
+                    <button class = "close" onclick="closeWindow()">X</button>
+                </div>
+            </div>
+            
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button id="login"> Login </button>
+            <button onclick="signup()"> Sign up </button>
+
+        </div>
+    </div>
+
+    <div class = "footer">
+        <p> By: Winston Lin</p>
+        <p>Inspired by MSN Messenger (90s)</p>
+    </div>
+
+    <script>
+        let db;
+
+        // Open IndexedDB database
+        const openDatabase = () => {
+            const request = indexedDB.open('MyDatabase', 1);
+
+            request.onerror = (event) => {
+                console.log('Error opening database.')
+            };
+
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                console.log('Database opened successfully.')
+            };
+
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                // Create an object store (table) if it doesn't exist
+                if (!db.objectStoreNames.contains('users')) {
+                    db.createObjectStore('users', { keyPath: 'id' });
+                }
+            };
+        };
+        
+        function signup(){
+            location.href = "signup.html"
+        }
+
+        const login = () => {
+            var u = document.getElementById("username").value
+            var p = document.getElementById("password").value
+
+            const transaction = db.transaction(['users'], 'readonly');
+            const store = transaction.objectStore('users');
+
+            const request = store.get(u); // Get data with id
+
+            request.onsuccess = (event) => {
+                const user = event.target.result;
+                if(user.password === p){
+                    // correct password, continue to user page
+                    console.log('good')
+                    var para = new URLSearchParams();
+                    para.append('username', u)
+                    location.href = `chat.html?username=${u}`   
+                }
+                else{
+                    // wrong password
+                    alert('Invalid password')
+                }
+            };
+
+            request.onerror = () => {
+                alert('wrong password')
+            };
+        };
+
+        // Event listeners
+        document.getElementById('login').addEventListener('click', login);
+            
+        // Open the database when the page is loaded
+        window.onload = openDatabase;
+    </script>
+</body>
+
+
+</html>
