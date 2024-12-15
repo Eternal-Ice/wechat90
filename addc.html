@@ -22,7 +22,7 @@
             </div>
 
             <input type="text" id="addu" placeholder="Type Contact Username" required>
-            <button id="add"> Add Contact</button>
+            <button id="addc"> Add Contact</button>
             <button id="getData">Get Data</button>
         </div>
     </div>
@@ -38,7 +38,7 @@
 
         // Open IndexedDB database
         const openDatabase = () => {
-            const request = indexedDB.open('MyDatabase', 1);
+            const request = indexedDB.open('MyDatabase', 3);
 
             request.onerror = (event) => {
                 console.log('Error opening database.')
@@ -68,7 +68,7 @@
         const username = para.get('username'); // Retrieve the 'username' parameter
         console.log(username)
 
-        const add = () => {
+        const addc = () => {
             var adduser = document.getElementById("addu").value
 
             const getTransaction = db.transaction(['users'], 'readonly');
@@ -82,9 +82,8 @@
                     const addTransaction = db.transaction(['userscontacts'], 'readwrite');
                     const store = addTransaction.objectStore('userscontacts');
                     const contact = {
-                        id1: username,
-                        id2: adduser,
-                        other: f
+                        u1: username,
+                        u2: adduser,
                     };
                     const addRequest = store.add(contact);
                     addRequest.onsuccess = () => {
@@ -109,12 +108,12 @@
             const transaction = db.transaction(['userscontacts'], 'readonly');
             const store = transaction.objectStore('userscontacts');
 
-            const request = store.get('lin'); // Get data with id
+            const request = store.get(["jlin","lin"]); // Get data with id
 
             request.onsuccess = (event) => {
                 const user = event.target.result;
                 if (user) {
-                    console.log(`User found: ${userscontacts.id1}, ${userscontacts.id2}, ${userscontacts.other}`)
+                    console.log(`User found: ${user.u1}, ${user.u2}`)
                 } else {
                     console.log('User not found.')
                 }
@@ -126,7 +125,7 @@
         };
         
         // Event listeners
-        document.getElementById('add').addEventListener('click', add);
+        document.getElementById('addc').addEventListener('click', addc);
         document.getElementById('getData').addEventListener('click', getData);
 
         // Open the database when the page is loaded
