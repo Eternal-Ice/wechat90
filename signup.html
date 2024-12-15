@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - 90s WeChat</title>
+    <title>Sign Up - 90s WeChat</title>
     <link rel="stylesheet" href="loginstyles.css"> <!-- Link to the external CSS file -->
 </head>
 
@@ -58,6 +58,12 @@
                 // Create an object store (table) if it doesn't exist
                 if (!db.objectStoreNames.contains('users')) {
                     db.createObjectStore('users', { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains('userscontacts')){
+                    db.createObjectStore('userscontacts', { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains('usersmessages')){
+                    db.createObjectStore('usersmessages', { keyPath: 'id' });
                 }
             };
         };
