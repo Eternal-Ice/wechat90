@@ -27,12 +27,22 @@
             <div class="contact-list">
                 <!-- Status Section -->
                 <div class="status">
-                    <p><strong>My Status:</strong> Online</p>
+                    <div class="profile-container">
+                        <!-- Profile Picture -->
+                        <div class="profile-picture">
+                            <img id="user-pfp" src="snorlax.png" alt="Profile Picture">
+                        </div>
+                        <!-- Username -->
+                        <div class="user-info">
+                            <p class="username-label"><strong>User Name:</strong></p>
+                            <p id="username-placeholder" class="username">Loading...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Online Contacts -->
-                <div class="contacts online">
-                    <h3>Online (2)</h3>
+                <div class="friends">
+                    <h3>Friends</h3>
                     <ul>
                         <li>
                             <img src="" alt="User" class="contact-pic">
@@ -44,33 +54,19 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- Offline Contacts -->
-                <div class="contacts offline">
-                    <h3>Not Online (1)</h3>
-                    <ul>
-                        <li>
-                            <img src="" alt="User" class="contact-pic">
-                            <span>Sarah</span>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             <!-- Action Panel -->
             <div class="action-panel">
                 <h3>I want to...</h3>
                 <ul>
-                    <li>➕ Add a Contact</li>
-                    <li>✉️ Send an Instant Message</li>
-                    <li>📎 Send a File or Photo</li>
-                    <li>📞 Make a Phone Call</li>
-                    <li>💬 Go to Chat Rooms</li>
+                    <li id="addc">➕ Add a Contact</li>
                 </ul>
             </div>
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
         let db;
 
@@ -79,12 +75,12 @@
             const request = indexedDB.open('MyDatabase', 1);
 
             request.onerror = (event) => {
-                console.log('Error opening database.')
+                console.log('Error opening database.');
             };
 
             request.onsuccess = (event) => {
                 db = event.target.result;
-                console.log('Database opened successfully.')
+                console.log('Database opened successfully.');
             };
 
             request.onupgradeneeded = (event) => {
@@ -96,10 +92,31 @@
             };
         };
 
-        var para = new URLSearchParams(window.location.search)
-        var u = para.get('username')
-        console.log(u)
+        const para = new URLSearchParams(window.location.search);
+        const username = para.get('username'); // Retrieve the 'username' parameter
+        // Retrieve and set the username from URL parameters
+        const setUsername = () => {
+            // Set the username dynamically in the placeholder
+            if (username) {
+                document.getElementById('username-placeholder').textContent = username;
+            } else {
+                document.getElementById('username-placeholder').textContent = 'Test';
+            }
+        };
 
+        // Initialize the database and set the username
+        openDatabase();
+        setUsername();
+
+        const addc = () => {
+            location.href = `addc.html?username=${username}` 
+        }
+
+        // Event listeners
+        document.getElementById('addc').addEventListener('click', addc);
+            
+        // Open the database when the page is loaded
+        window.onload = openDatabase;
     </script>
 </body>
 </html>
