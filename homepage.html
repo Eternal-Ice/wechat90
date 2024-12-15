@@ -43,13 +43,13 @@
                 <!-- Online Contacts -->
                 <div class="friends">
                     <h3>Friends</h3>
-                    <ul>
-                        <li>
-                            <img src="" alt="User" class="contact-pic">
+                    <ul id="friends-list">
+                        <li class="contact-item" onclick="openChat('Dan')">
+                            <img src="snorlax.png" alt="User" class="contact-pic">
                             <span>Dan</span>
                         </li>
-                        <li>
-                            <img src="" alt="User" class="contact-pic">
+                        <li class="contact-item" onclick="openChat('Lisa')">
+                            <img src="snorlax.png" alt="User" class="contact-pic">
                             <span>Lisa</span>
                         </li>
                     </ul>
@@ -103,6 +103,11 @@
                 document.getElementById('username-placeholder').textContent = 'Test';
             }
         };
+
+        // Function to open a chat window for a selected friend
+        const openChat = (friendName) => {
+            window.location.href = `chat.html?friend=${friendName}`;
+        }
 
         // Initialize the database and set the username
         openDatabase();
