@@ -1,0 +1,101 @@
+/* Desktop Background */
+.desktop-background {
+    background-color: #00477f;
+    background-image: url("desktop.png");
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Messenger Window */
+.messenger-window {
+    background-color: #f2f2f2;
+    width: 300px;
+    border: 2px solid #999;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-family: Tahoma, sans-serif;
+}
+
+/* Window Header */
+.window-header {
+    background-color: #00477f;
+    color: white;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Tahoma', sans-serif; /* More consistent 90s font */
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.window-title img {
+    margin-right: 5px;
+}
+
+/* Contact List */
+.contact-list {
+    padding: 10px;
+    font-size: 12px;
+    color: #333;
+}
+
+.contacts h3 {
+    border-bottom: 1px solid #ccc;
+    margin-top: 10px;
+    padding-bottom: 5px;
+    font-size: 12px;
+}
+
+.contacts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contacts li {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.contact-pic {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: #ddd; /* Placeholder */
+}
+
+/* Action Panel */
+.action-panel {
+    background-color: #e6e6e6;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+
+.action-panel h3 {
+    margin: 0;
+    font-size: 12px;
+    color: #00477f;
+}
+
+.action-panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+}
+
+.action-panel li {
+    font-size: 12px;
+    margin: 3px 0;
+    cursor: pointer;
+    color: #00477f;
+}
+
+.action-panel li:hover {
+    text-decoration: underline;
+}
