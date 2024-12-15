@@ -64,9 +64,38 @@
             };
         };
 
+        let messagesReceived = [];
         
+        const messagesContainer = document.querySelector(".list-container");
 
-        
+        function showMSG(sender, time, txtmsg) {
+            messagesReceived.push(txtmsg);
+            console.log(messagesReceived);
+            let msg = `<article class = 'message'>
+                <p class = 'received'>${sender} at ${time}</p>
+                <p class = 'received'>${txtmsg}</p>
+                </article>`;
+            messagesContainer.innerHTML+=msg;
+        }
+
+        const sendMSG = () => {
+            var m = document.getElementById("message").value;
+            var t = new Date();
+            t = `${t.getHours()}:${(t.getMinutes()<10?'0':'')}${t.getMinutes()}`;
+            var myUsername = "Also You"
+            if (m !== "") {
+                document.getElementById("message").value = "";
+                let msg = `<article class = 'message'>
+                    <p class = 'sent'>You at ${t}</p>
+                    <p class = 'sent'>${m}</p>
+                    </article>`;
+                messagesContainer.innerHTML+=msg;
+                showMSG(myUsername, t, m);
+            }
+        };
+
+        // Event listeners
+        document.getElementById('send_msg').addEventListener('click', sendMSG);
 
         // Open the database when the page is loaded
         window.onload = openDatabase;
