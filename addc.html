@@ -55,17 +55,17 @@
                     db.createObjectStore('users', { keyPath: 'id' });
                 }
                 if (!db.objectStoreNames.contains('userscontacts')){
-                    db.createObjectStore('userscontacts', { keyPath: 'id' });
+                    db.createObjectStore('userscontacts', { unique: false });
                 }
                 if (!db.objectStoreNames.contains('usersmessages')){
-                    db.createObjectStore('usersmessages', { keyPath: 'id' });
+                    db.createObjectStore('usersmessages', { unique: false });
                 }
             };
         };
 
-        var para = new URLSearchParams(window.location.search)
-        var u = para.get('username')
-        console.log(u)
+        const para = new URLSearchParams(window.location.search);
+        const username = para.get('username'); // Retrieve the 'username' parameter
+        console.log(username)
 
         const add = () => {
             var au = document.getElementById("addu").value
@@ -77,6 +77,10 @@
             request.onsuccess = (event) => {
             const user = event.target.result;
                 if (user) {
+                    const contact = {
+                        id: user.id,
+                        contact: au
+                    };
                     
                 } else {
                     document.getElementById('status').textContent = 'User not found.';
@@ -89,7 +93,7 @@
         }
         
         // Event listeners
-        document.getElementById('add').addEventListener('click', addd);
+        document.getElementById('add').addEventListener('click', add);
 
         // Open the database when the page is loaded
         window.onload = openDatabase;

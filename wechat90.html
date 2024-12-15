@@ -56,12 +56,6 @@
                 if (!db.objectStoreNames.contains('users')) {
                     db.createObjectStore('users', { keyPath: 'id' });
                 }
-                if (!db.objectStoreNames.contains('userscontacts')){
-                    db.createObjectStore('userscontacts', { keyPath: 'id' });
-                }
-                if (!db.objectStoreNames.contains('usersmessages')){
-                    db.createObjectStore('usersmessages', { keyPath: 'id' });
-                }
             };
         };
         

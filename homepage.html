@@ -60,7 +60,7 @@
             <div class="action-panel">
                 <h3>I want to...</h3>
                 <ul>
-                    <li>➕ Add a Contact</li>
+                    <li id="addc">➕ Add a Contact</li>
                 </ul>
             </div>
         </div>
@@ -89,20 +89,13 @@
                 if (!db.objectStoreNames.contains('users')) {
                     db.createObjectStore('users', { keyPath: 'id' });
                 }
-                if (!db.objectStoreNames.contains('userscontacts')){
-                    db.createObjectStore('userscontacts', { keyPath: 'id' });
-                }
-                if (!db.objectStoreNames.contains('usersmessages')){
-                    db.createObjectStore('usersmessages', { keyPath: 'id' });
-                }
             };
         };
 
+        const para = new URLSearchParams(window.location.search);
+        const username = para.get('username'); // Retrieve the 'username' parameter
         // Retrieve and set the username from URL parameters
         const setUsername = () => {
-            const para = new URLSearchParams(window.location.search);
-            const username = para.get('username'); // Retrieve the 'username' parameter
-
             // Set the username dynamically in the placeholder
             if (username) {
                 document.getElementById('username-placeholder').textContent = username;
@@ -114,6 +107,16 @@
         // Initialize the database and set the username
         openDatabase();
         setUsername();
+
+        const addc = () => {
+            location.href = `addc.html?username=${username}` 
+        }
+
+        // Event listeners
+        document.getElementById('addc').addEventListener('click', addc);
+            
+        // Open the database when the page is loaded
+        window.onload = openDatabase;
     </script>
 </body>
 </html>
