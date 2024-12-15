@@ -22,8 +22,8 @@ body {
     bottom: 0;
 }
 
-/* Login Container */
-.login-container {
+/* Chat Container */
+.chat-container {
     background-color: white;
     width: 300px;
     padding: 50px 20px 20px 20px;
@@ -168,9 +168,9 @@ button {
     color: white;
     font-size: 16px;
     border: none;
-    /*border-radius: 4px;
+    border-radius: 4px;
     cursor: pointer;
-    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 3D button effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 3D button effect */
 }
 
 button:hover {
@@ -187,4 +187,34 @@ button:hover {
     color: #cccccc;
     text-align: center;
     width: 100%;
+}
+
+.list-container {
+    width: 100%;
+    background: white;
+    border-radius: 5px;
+    min-height: 15px;
+    max-height: fit-content;
+    padding: 10px 10px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.list-container.message {
+    display:flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.received {
+    font-size: 14px;
+    text-align: left
+}
+
+.sent {
+    font-size: 14px;
+    text-align: right
 }

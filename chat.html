@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat - 90s WeChat</title>
-    <link rel="stylesheet" href="loginstyles.css"> <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="chatbox_styles.css"> <!-- Link to the external CSS file -->
 </head>
 
 <body>
     <div class = "desktop-background">
 
-        <div class = 'login-container' id = 'login-container'>
+        <div class = 'chat-container' id = 'chat-container'>
 
             <div class = "window-header" id ="header">
                 <span class = "window-title"> Wechat </span>
@@ -20,8 +20,15 @@
                     <button class = "close" onclick="closeWindow()">X</button>
                 </div>
             </div>
+            
+            <div class = 'list-container' id = 'message-list-container'>
+                <article class = 'message'>
+                    <p class = 'received'> They've sent no message. Say hello! </p>
+                </article>
+            </div>
 
-            <input type="text" id="message" placeholder="" required>
+            <input type="text" id="message" placeholder="Enter Message" required>
+            <button id="send_msg"> Send Message </button>
 
         </div>
     </div>
@@ -63,7 +70,38 @@
             };
         };
 
+        let messagesReceived = [];
         
+        const messagesContainer = document.querySelector(".list-container");
+
+        function showMSG(sender, time, txtmsg) {
+            messagesReceived.push(txtmsg);
+            console.log(messagesReceived);
+            let msg = `<article class = 'message'>
+                <p class = 'received'>${sender} at ${time}</p>
+                <p class = 'received'>${txtmsg}</p>
+                </article>`;
+            messagesContainer.innerHTML+=msg;
+        }
+
+        const sendMSG = () => {
+            var m = document.getElementById("message").value;
+            var t = new Date();
+            t = `${t.getHours()}:${(t.getMinutes()<10?'0':'')}${t.getMinutes()}`;
+            var myUsername = "Also You"
+            if (m !== "") {
+                document.getElementById("message").value = "";
+                let msg = `<article class = 'message'>
+                    <p class = 'sent'>You at ${t}</p>
+                    <p class = 'sent'>${m}</p>
+                    </article>`;
+                messagesContainer.innerHTML+=msg;
+                showMSG(myUsername, t, m);
+            }
+        };
+
+        // Event listeners
+        document.getElementById('send_msg').addEventListener('click', sendMSG);
 
         // Open the database when the page is loaded
         window.onload = openDatabase;
