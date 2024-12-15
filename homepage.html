@@ -44,11 +44,11 @@
                 <div class="friends">
                     <h3>Friends</h3>
                     <ul id="friends-list">
-                        <li class="contact-item" onclick="openChat('Dan')">
+                        <li class="contact-item" onclick="openChat('Dan', this)">
                             <img src="snorlax.png" alt="User" class="contact-pic">
                             <span>Dan</span>
                         </li>
-                        <li class="contact-item" onclick="openChat('Lisa')">
+                        <li class="contact-item" onclick="openChat('Lisa', this)">
                             <img src="snorlax.png" alt="User" class="contact-pic">
                             <span>Lisa</span>
                         </li>
@@ -111,7 +111,7 @@
         };
 
         // Function to open a chat window for a selected friend
-        const openChat = (friendName) => {
+        const openChat = (friendName, contactElement) => {
             window.location.href = `chat.html?friend=${friendName}`;
         }
 
