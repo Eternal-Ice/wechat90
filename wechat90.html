@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>90s WeChat</title>
+    <title>Login - 90s WeChat</title>
     <link rel="stylesheet" href="loginstyles.css"> <!-- Link to the external CSS file -->
 </head>
 
@@ -13,6 +13,7 @@
         <div class = 'login-container' id = 'login-container'>
 
             <div class = "window-header" id ="header">
+                <img src = "wechatIcon.png", alt = "Wechat Icon" class = "header-icon"/>
                 <span class = "window-title"> Wechat </span>
                 <div class = "window-controls">
                     <button class = "minimize" onclick ="minimizeWindow()">_</button>
@@ -20,12 +21,20 @@
                     <button class = "close" onclick="closeWindow()">X</button>
                 </div>
             </div>
-            
-            <input type="text" id="username" placeholder="Enter your username" required>
-            <input type="password" id="password" placeholder="Enter your password" required>
-            <button id="login"> Login </button>
-            <button onclick="signup()"> Sign up </button>
 
+            <!-- Profile Picture (Image)-->
+            <div class = "profile-picture-container">
+                <img src = "snorlax.png" alt = "Profile Picutre" class = "profile-pic">
+            </div>
+
+            <!-- Labels and input fields -->
+            <label for = 'username'> Username: </label>
+            <input type="text" id="username" placeholder="Enter your username" required>
+
+            <label for = 'password'> Password: </label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button onclick = "signup()"> Sign up </button>
+            <button onclick="login()">Login </button>
         </div>
     </div>
 
