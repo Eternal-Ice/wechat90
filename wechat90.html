@@ -92,8 +92,6 @@
                 if(user.password === p){
                     // correct password, continue to user page
                     console.log('good')
-                    var para = new URLSearchParams();
-                    para.append('username', u)
                     location.href = `homepage.html?username=${u}`   
                 }
                 else{

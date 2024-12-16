@@ -41,6 +41,11 @@
 
     <script>
         let db;
+        let index
+
+        const para = new URLSearchParams(window.location.search);
+        const username = para.get('username');
+        const friend = para.get('friend');
 
         // Open IndexedDB database
         const openDatabase = () => {
@@ -53,6 +58,8 @@
             request.onsuccess = (event) => {
                 db = event.target.result;
                 console.log('Database opened successfully.')
+
+                showAllMessages()
             };
 
             request.onupgradeneeded = (event) => {
@@ -70,38 +77,125 @@
             };
         };
 
-        // Retrieving username from the URL parameter
-        const para = new URLSearchParams(window.location.search);
-        const username = para.get('friend') || 'User';  // Default to 'User' if not provided
-        document.querySelector('.window-title').textContent = `Chatting with ${username}`;
+        function send(i, t, msg) {
+            const transaction = db.transaction(['usersmessages'], 'readwrite');
+            const store = transaction.objectStore('usersmessages');
+            let tuple = {index: i, message: msg, time: t}
 
-        let messagesReceived = [];
+            const request = store.get([username, friend]);
+
+            request.onsuccess = (event) => {
+            let messageList = event.target.result;
+            if (typeof(messageList) != "undefined") {
+                console.log(messageList)
+                messageList.push(tuple)
+                let request = store.put(messageList, [username, friend]);
+                request.onsuccess = () => {
+                    console.log('put successfully')
+                };
+                request.onerror = () => {
+                    console.log('put failed')
+                };
+            }
+            else {
+                let request = store.put([tuple], [username, friend]);
+                request.onsuccess = () => {
+                    console.log('put successfully')
+                };
+                request.onerror = () => {
+                    console.log('put failed')
+                };
+            }
+            };
+            request.onerror = () => {
+                console.log('dbget failed')
+            };
+        }
+        function showAllMessages() {
+            //read from db
+            const transaction = db.transaction(['usersmessages'], 'readonly');
+            const store = transaction.objectStore('usersmessages');
+
+            let friendMessages, myMessages
+
+            let request = store.get([friend, username]);
+
+            request.onsuccess = (event) => {
+                friendMessages = event.target.result;
+                if (typeof(friendMessages) == "undefined")
+                    friendMessages = []
+            };
+            request.onerror = () => {
+                console.log('Error retrieving other messages')
+            };
+
+            request = store.get([username, friend]);
+
+            request.onsuccess = (event) => {
+                myMessages = event.target.result;
+                if (typeof(myMessages) == "undefined")
+                    myMessages = []
+            };
+            request.onerror = () => {
+                console.log('Error retrieving my messages')
+            };
+
+            console.log(friendMessages)
+            console.log(myMessages)
+
+            index = friendMessages.length + myMessages.length
+
+            //show messages to user
+            let fi = 0, mi = 0
+            while (fi < friendMessages.length && mi < myMessages.length) {
+                let u, t, m;
+                if (friendMessages[fi].index < myMessages[mi].index) {
+                    u = friend
+                    t = friendMessages[fi].time
+                    m = friendMessages[fi].message
+                    fi++
+                }
+                else {
+                    u = username
+                    t = myMessages[mi].time
+                    m = myMessages[mi].message
+                    mi++
+                }
+                showMSG(u, t, m)
+            }
+            for (let i = fi; i < friendMessages.length; i++)
+                showMSG(friend, friendMessages[i].time, friendMessages[i].message)
+            for (let i = mi; i < myMessages.length; i++)
+                showMSG(username, myMessages[i].time, myMessages[i].message)
+        };
+
+        // Retrieving username from the URL parameter
+        document.querySelector('.window-title').textContent = `Chatting with ${friend}`;
         
         const messagesContainer = document.querySelector(".list-container");
 
         function showMSG(sender, time, txtmsg) {
-            messagesReceived.push(txtmsg);
-            console.log(messagesReceived);
+            let form = 'sent'
+            if (sender !== username)
+                form = 'received'
+            else
+                sender = 'You'
             let msg = `<article class = 'message'>
-                <p class = 'received'>${sender} at ${time}</p>
-                <p class = 'received'>${txtmsg}</p>
+                <p class = '${form}'>${sender} at ${time}</p>
+                <p class = '${form}'>${txtmsg}</p>
                 </article>`;
             messagesContainer.innerHTML+=msg;
         }
 
         const sendMSG = () => {
-            var m = document.getElementById("message").value;
-            var t = new Date();
-            t = `${t.getHours()}:${(t.getMinutes()<10?'0':'')}${t.getMinutes()}`;
-            var myUsername = "Also You"
+            let m = document.getElementById("message").value;
             if (m !== "") {
+                let t = new Date();
+                t = `${t.getHours()}:${(t.getMinutes()<10?'0':'')}${t.getMinutes()}`;
                 document.getElementById("message").value = "";
-                let msg = `<article class = 'message'>
-                    <p class = 'sent'>You at ${t}</p>
-                    <p class = 'sent'>${m}</p>
-                    </article>`;
-                messagesContainer.innerHTML+=msg;
-                showMSG(myUsername, t, m);
+                send(index, t, m)
+                index++
+                showMSG(username, t, m);
             }
         };
 
