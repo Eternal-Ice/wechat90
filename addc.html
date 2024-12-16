@@ -40,7 +40,7 @@
 
         // Open IndexedDB database
         const openDatabase = () => {
-            const request = indexedDB.open('MyDatabase', 4);
+            const request = indexedDB.open('MyDatabase', 5);
 
             request.onerror = (event) => {
                 console.log('Error opening database.')
@@ -88,7 +88,7 @@
                         u2: adduser
                     };
                     console.log(contact)
-                    const addRequest = store.add(contact);
+                    const addRequest = store.add(contact)
                     addRequest.onsuccess = () => {
                         console.log('Added contact')
                     };
