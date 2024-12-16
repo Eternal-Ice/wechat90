@@ -85,8 +85,9 @@
                     const store = addTransaction.objectStore('userscontacts');
                     const contact = {
                         u1: username,
-                        u2: adduser,
+                        u2: adduser
                     };
+                    console.log(contact)
                     const addRequest = store.add(contact);
                     addRequest.onsuccess = () => {
                         console.log('Added contact')
@@ -115,9 +116,9 @@
             request.onsuccess = (event) => {
                 const user = event.target.result;
                 if (user) {
-                    console.log(`User found: ${user.u1}, ${user.u2}`)
+                    console.log(`Contact found: ${user.u1}, ${user.u2}`)
                 } else {
-                    console.log('User not found.')
+                    console.log('Contact not found.')
                 }
             };
 
