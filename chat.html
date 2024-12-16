@@ -85,27 +85,27 @@
             const request = store.get([username, friend]);
 
             request.onsuccess = (event) => {
-            let messageList = event.target.result;
-            if (typeof(messageList) != "undefined") {
-                console.log(messageList)
-                messageList.push(tuple)
-                let request = store.put(messageList, [username, friend]);
-                request.onsuccess = () => {
-                    console.log('put successfully')
-                };
-                request.onerror = () => {
-                    console.log('put failed')
-                };
-            }
-            else {
-                let request = store.put([tuple], [username, friend]);
-                request.onsuccess = () => {
-                    console.log('put successfully')
-                };
-                request.onerror = () => {
-                    console.log('put failed')
-                };
-            }
+                let messageList = event.target.result;
+                if (typeof(messageList) != "undefined") {
+                    console.log(messageList)
+                    messageList.push(tuple)
+                    let request = store.put(messageList, [username, friend]);
+                    request.onsuccess = () => {
+                        console.log('put successfully')
+                    };
+                    request.onerror = () => {
+                        console.log('put failed')
+                    };
+                }
+                else {
+                    let request = store.put([tuple], [username, friend]);
+                    request.onsuccess = () => {
+                        console.log('put successfully')
+                    };
+                    request.onerror = () => {
+                        console.log('put failed')
+                    };
+                }
             };
             request.onerror = () => {
                 console.log('dbget failed')
@@ -124,49 +124,49 @@
                 friendMessages = event.target.result;
                 if (typeof(friendMessages) == "undefined")
                     friendMessages = []
+
+                request = store.get([username, friend]);
+
+                request.onsuccess = (event) => {
+                    myMessages = event.target.result;
+                    if (typeof(myMessages) == "undefined")
+                        myMessages = []
+                    MessagesCallback()
+                };
+                request.onerror = () => {
+                    console.log('Error retrieving my messages')
+                };
             };
             request.onerror = () => {
                 console.log('Error retrieving other messages')
             };
 
-            request = store.get([username, friend]);
+            function MessagesCallback() {
+                index = friendMessages.length + myMessages.length
 
-            request.onsuccess = (event) => {
-                myMessages = event.target.result;
-                if (typeof(myMessages) == "undefined")
-                    myMessages = []
-            };
-            request.onerror = () => {
-                console.log('Error retrieving my messages')
-            };
-
-            console.log(friendMessages)
-            console.log(myMessages)
-
-            index = friendMessages.length + myMessages.length
-
-            //show messages to user
-            let fi = 0, mi = 0
-            while (fi < friendMessages.length && mi < myMessages.length) {
-                let u, t, m;
-                if (friendMessages[fi].index < myMessages[mi].index) {
-                    u = friend
-                    t = friendMessages[fi].time
-                    m = friendMessages[fi].message
-                    fi++
+                //show messages to user
+                let fi = 0, mi = 0
+                while (fi < friendMessages.length && mi < myMessages.length) {
+                    let u, t, m;
+                    if (friendMessages[fi].index < myMessages[mi].index) {
+                        u = friend
+                        t = friendMessages[fi].time
+                        m = friendMessages[fi].message
+                        fi++
+                    }
+                    else {
+                        u = username
+                        t = myMessages[mi].time
+                        m = myMessages[mi].message
+                        mi++
+                    }
+                    showMSG(u, t, m)
                 }
-                else {
-                    u = username
-                    t = myMessages[mi].time
-                    m = myMessages[mi].message
-                    mi++
-                }
-                showMSG(u, t, m)
+                for (let i = fi; i < friendMessages.length; i++)
+                    showMSG(friend, friendMessages[i].time, friendMessages[i].message)
+                for (let i = mi; i < myMessages.length; i++)
+                    showMSG(username, myMessages[i].time, myMessages[i].message)
             }
-            for (let i = fi; i < friendMessages.length; i++)
-                showMSG(friend, friendMessages[i].time, friendMessages[i].message)
-            for (let i = mi; i < myMessages.length; i++)
-                showMSG(username, myMessages[i].time, myMessages[i].message)
         };
 
         // Retrieving username from the URL parameter
